@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>日本市場廣度監測</title>
+<style>
+:root {
+  color-scheme: light;
+  --surface: #fcfcfb; --panel: #ffffff; --line: #e6e5e1; --grid: #ecebe7;
+  --text: #0b0b0b; --text2: #52514e; --muted: #84837e;
+  --up: #2a78d6; --down: #eb6834; --s2: #e87ba4;
+  --up-t1: rgba(42,120,214,.14); --up-t2: rgba(42,120,214,.30);
+  --dn-t1: rgba(235,104,52,.15); --dn-t2: rgba(235,104,52,.32);
+}
+@media (prefers-color-scheme: dark) {
+  :root:where(:not([data-theme="light"])) {
+    color-scheme: dark;
+    --surface: #1a1a19; --panel: #222221; --line: #353533; --grid: #2d2d2b;
+    --text: #ffffff; --text2: #c3c2b7; --muted: #8f8e86;
+    --up: #3987e5; --down: #d95926; --s2: #d55181;
+    --up-t1: rgba(57,135,229,.20); --up-t2: rgba(57,135,229,.42);
+    --dn-t1: rgba(217,89,38,.22); --dn-t2: rgba(217,89,38,.46);
+  }
+}
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --surface: #1a1a19; --panel: #222221; --line: #353533; --grid: #2d2d2b;
+  --text: #ffffff; --text2: #c3c2b7; --muted: #8f8e86;
+  --up: #3987e5; --down: #d95926; --s2: #d55181;
+  --up-t1: rgba(57,135,229,.20); --up-t2: rgba(57,135,229,.42);
+  --dn-t1: rgba(217,89,38,.22); --dn-t2: rgba(217,89,38,.46);
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--surface); color: var(--text);
+  font: 14px/1.5 -apple-system, "Segoe UI", "Microsoft JhengHei", "PingFang TC", sans-serif; }
+.wrap { max-width: 1240px; margin: 0 auto; padding: 20px 16px 48px; }
+header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 16px; margin-bottom: 14px; }
+h1 { font-size: 20px; margin: 0; font-weight: 650; }
+.sub { color: var(--text2); font-size: 13px; }
+.spacer { flex: 1; }
+button { font: inherit; color: var(--text); background: var(--panel); border: 1px solid var(--line);
+  border-radius: 6px; padding: 4px 10px; cursor: pointer; }
+button[aria-pressed="true"] { border-color: var(--up); box-shadow: inset 0 0 0 1px var(--up); }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px; margin-bottom: 18px; }
+.tile { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; }
+.tile .k { color: var(--text2); font-size: 12px; }
+.tile .v { font-size: 24px; font-weight: 650; font-variant-numeric: tabular-nums; margin: 2px 0; }
+.tile .p { color: var(--muted); font-size: 12px; font-variant-numeric: tabular-nums; }
+.tile .v .u { color: var(--up); } .tile .v .d { color: var(--down); }
+h2 { font-size: 15px; margin: 22px 0 8px; font-weight: 650; }
+.toolbar { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; margin: 8px 0 12px; }
+.charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 560px), 1fr)); gap: 12px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px 6px; position: relative; }
+.card h3 { margin: 0 0 2px; font-size: 13px; font-weight: 650; }
+.legend { display: flex; gap: 14px; font-size: 12px; color: var(--text2); margin-bottom: 2px; }
+.legend i { display: inline-block; width: 10px; height: 10px; border-radius: 2px; margin-right: 5px; vertical-align: -1px; }
+svg { display: block; width: 100%; height: auto; overflow: visible; }
+svg text { fill: var(--text2); font-size: 11px; font-variant-numeric: tabular-nums; }
+.tip { position: fixed; pointer-events: none; z-index: 10; display: none; background: var(--panel);
+  border: 1px solid var(--line); border-radius: 6px; padding: 6px 9px; font-size: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,.18); font-variant-numeric: tabular-nums; }
+.tip b { display: block; margin-bottom: 2px; }
+.tip i { display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 6px; }
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; background: var(--panel); }
+table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; white-space: nowrap; }
+th, td { padding: 4px 9px; text-align: right; border-bottom: 1px solid var(--line); }
+thead th { position: sticky; top: 0; background: var(--panel); font-weight: 600; font-size: 12px; color: var(--text2); }
+thead tr.grp th { text-align: center; border-bottom: 1px solid var(--line); color: var(--text); }
+th:first-child, td:first-child { text-align: left; position: sticky; left: 0; background: var(--panel); }
+td.u1 { background: var(--up-t1); } td.u2 { background: var(--up-t2); }
+td.d1 { background: var(--dn-t1); } td.d2 { background: var(--dn-t2); }
+.note { color: var(--text2); font-size: 12.5px; }
+details { margin-top: 18px; color: var(--text2); font-size: 13px; }
+summary { cursor: pointer; color: var(--text); font-weight: 600; }
+details p { margin: 6px 0; }
+#err { display: none; background: var(--dn-t1); border: 1px solid var(--down); border-radius: 8px; padding: 12px; margin: 12px 0; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>日本市場廣度監測</h1>
+    <span class="sub" id="asof">載入中…</span>
+    <span class="spacer"></span>
+    <button id="theme" type="button" aria-label="切換深淺色">深／淺色</button>
+  </header>
+  <div id="err"></div>
+  <div class="tiles" id="tiles"></div>
+
+  <h2>走勢圖</h2>
+  <div class="toolbar" id="ranges" role="group" aria-label="時間範圍"></div>
+  <div class="charts" id="charts"></div>
+
+  <h2>每日數據表</h2>
+  <div class="toolbar">
+    <button id="more" type="button">顯示全部歷史</button>
+    <span class="note">底色代表該數值在整段歷史中的相對極端程度：藍＝偏強端，橘＝偏弱端（深色為前 10%，淺色為前 25%）。</span>
+  </div>
+  <div class="tablewrap"><table id="tbl"></table></div>
+
+  <details>
+    <summary>指標定義與資料說明</summary>
+    <p>股票池：東證 Prime、Standard、Growth 內國普通股，排除 ETF、REIT、PRO Market；再以 20 日平均成交金額 ≥ 1,000 萬日圓過濾。價格為 Yahoo Finance 的調整後收盤價（含分割與股息）。</p>
+    <p>4% 漲／跌：當日報酬 ≥ +4% 或 ≤ −4% 的家數（未加成交量條件）。5／10 日比率＝近 5／10 日漲 4% 家數合計 ÷ 跌 4% 家數合計。</p>
+    <p>季度：65 個交易日報酬 ±25%。月度：21 個交易日報酬 ±25%、±50%。34 日：34 個交易日報酬 ±13%。T2108：收盤高於 40 日均線的股票比例。</p>
+    <p>極端值通常可作逆向參考（極度弱勢常見於底部、極度強勢常見於過熱），需綜合判讀，單一指標不構成買賣訊號。</p>
+  </details>
+</div>
+<div class="tip" id="tip"></div>
+
+<script>
+"use strict";
+const $ = s => document.querySelector(s);
+const NUM = ["universe_size","up4","down4","ratio5","ratio10","q_up25","q_dn25","m_up25","m_dn25","m_up50","m_dn50","d34_up13","d34_dn13","t2108","nikkei225","nikkei225_chg_pct","topix_etf","topix_etf_chg_pct"];
+let D = [];                       // 全部資料（舊→新）
+let range = 120, showAll = false, hover = -1, charts = [];
+
+/* ---------- 主題 ---------- */
+(function () {
+  let t = null; try { t = localStorage.getItem("theme"); } catch (e) {}
+  if (t) document.documentElement.dataset.theme = t;
+  $("#theme").onclick = () => {
+    const dark = getComputedStyle(document.documentElement).colorScheme === "dark";
+    const nt = dark ? "light" : "dark";
+    document.documentElement.dataset.theme = nt;
+    try { localStorage.setItem("theme", nt); } catch (e) {}
+    renderCharts();
+  };
+})();
+
+/* ---------- 載入 ---------- */
+async function load() {
+  try {
+    const r = await fetch("data/breadth.csv?v=" + Date.now());
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    const lines = (await r.text()).trim().split(/\r?\n/);
+    const head = lines[0].split(",");
+    D = lines.slice(1).map(l => {
+      const c = l.split(","), o = {};
+      head.forEach((h, i) => { o[h] = h === "Date" ? c[i] : (c[i] === "" ? NaN : parseFloat(c[i])); });
+      return o;
+    }).filter(o => o.Date);
+    if (!D.length) throw new Error("沒有資料");
+  } catch (e) {
+    const el = $("#err"); el.style.display = "block";
+    el.innerHTML = "無法讀取 data/breadth.csv（" + e.message + "）。若直接雙擊開啟檔案，瀏覽器會擋住讀取；請用 GitHub Pages 網址，或在專案資料夾執行 view_local.bat。";
+    $("#asof").textContent = "";
+    return;
+  }
+  const last = D[D.length - 1];
+  $("#asof").textContent = "最新資料日：" + last.Date + "　｜　股票池 " + fmt(last.universe_size, 0) + " 隻　｜　共 " + D.length + " 個交易日";
+  buildPct(); renderTiles(); renderRanges(); renderCharts(); renderTable();
+}
+
+const fmt = (v, d = 0) => isFinite(v) ? v.toLocaleString("en-US", { minimumFractionDigits: d, maximumFractionDigits: d }) : "–";
+
+/* ---------- 百分位 ---------- */
+const sorted = {};
+function buildPct() { NUM.forEach(k => { sorted[k] = D.map(r => r[k]).filter(isFinite).sort((a, b) => a - b); }); }
+function pct(k, v) {
+  const a = sorted[k]; if (!a.length || !isFinite(v)) return NaN;
+  let lo = 0, hi = a.length; while (lo < hi) { const m = (lo + hi) >> 1; if (a[m] <= v) lo = m + 1; else hi = m; }
+  return lo / a.length;
+}
+
+/* ---------- 摘要卡 ---------- */
+function renderTiles() {
+  const a = D[D.length - 1], b = D[D.length - 2] || a;
+  const T = [
+    ["當日 4% 漲 / 跌", `<span class="u">${fmt(a.up4)}</span> / <span class="d">${fmt(a.down4)}</span>`, `前日 ${fmt(b.up4)} / ${fmt(b.down4)}`],
+    ["5 日比率", fmt(a.ratio5, 2), `前日 ${fmt(b.ratio5, 2)}　歷史百分位 ${fmt(pct("ratio5", a.ratio5) * 100)}%`],
+    ["10 日比率", fmt(a.ratio10, 2), `前日 ${fmt(b.ratio10, 2)}　歷史百分位 ${fmt(pct("ratio10", a.ratio10) * 100)}%`],
+    ["季度 ±25%（漲 / 跌）", `<span class="u">${fmt(a.q_up25)}</span> / <span class="d">${fmt(a.q_dn25)}</span>`, `前日 ${fmt(b.q_up25)} / ${fmt(b.q_dn25)}`],
+    ["月度 ±25%（漲 / 跌）", `<span class="u">${fmt(a.m_up25)}</span> / <span class="d">${fmt(a.m_dn25)}</span>`, `前日 ${fmt(b.m_up25)} / ${fmt(b.m_dn25)}`],
+    ["T2108（高於 40 日線 %）", fmt(a.t2108, 1), `前日 ${fmt(b.t2108, 1)}`],
+  ];
+  $("#tiles").innerHTML = T.map(t => `<div class="tile"><div class="k">${t[0]}</div><div class="v">${t[1]}</div><div class="p">${t[2]}</div></div>`).join("");
+}
+
+/* ---------- 時間範圍 ---------- */
+function renderRanges() {
+  const R = [[60, "3 個月"], [120, "6 個月"], [250, "1 年"], [0, "全部"]];
+  $("#ranges").innerHTML = R.map(r => `<button type="button" data-r="${r[0]}" aria-pressed="${r[0] === range}">${r[1]}</button>`).join("");
+  document.querySelectorAll("#ranges button").forEach(b => b.onclick = () => { range = +b.dataset.r; renderRanges(); renderCharts(); });
+}
+
+/* ---------- SVG 圖表 ---------- */
+const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const CH = [
+  { title: "當日漲 / 跌 4% 以上家數", kind: "bar", yfmt: v => fmt(Math.abs(v)),
+    series: [{ k: "up4", label: "漲 4%+", c: "--up", sign: 1 }, { k: "down4", label: "跌 4%+", c: "--down", sign: -1 }] },
+  { title: "5 日 / 10 日比率（漲 4% ÷ 跌 4%）", kind: "line", yfmt: v => fmt(v, 1), refs: [{ v: 1, t: "1" }, { v: 2, t: "2" }, { v: .5, t: "0.5" }],
+    series: [{ k: "ratio5", label: "5 日", c: "--up" }, { k: "ratio10", label: "10 日", c: "--s2" }] },
+  { title: "T2108：高於 40 日均線的股票 %", kind: "line", yfmt: v => fmt(v) + "%", refs: [{ v: 20, t: "20" }, { v: 85, t: "85" }], fixed: [0, 100],
+    series: [{ k: "t2108", label: "T2108", c: "--up" }] },
+  { title: "季度（65 日）漲 / 跌 25% 家數", kind: "line", yfmt: v => fmt(v),
+    series: [{ k: "q_up25", label: "漲 25%+", short: "漲", c: "--up" }, { k: "q_dn25", label: "跌 25%+", short: "跌", c: "--down" }] },
+  { title: "月度（21 日）漲 / 跌 25% 家數", kind: "line", yfmt: v => fmt(v),
+    series: [{ k: "m_up25", label: "漲 25%+", short: "漲", c: "--up" }, { k: "m_dn25", label: "跌 25%+", short: "跌", c: "--down" }] },
+  { title: "34 日漲 / 跌 13% 家數", kind: "line", yfmt: v => fmt(v),
+    series: [{ k: "d34_up13", label: "漲 13%+", short: "漲", c: "--up" }, { k: "d34_dn13", label: "跌 13%+", short: "跌", c: "--down" }] },
+  { title: "日經 225（對照）", kind: "line", yfmt: v => fmt(v), series: [{ k: "nikkei225", label: "日經 225", c: "--text2" }] },
+];
+
+function niceTicks(lo, hi, n = 4) {
+  const span = hi - lo || 1, raw = span / n, mag = Math.pow(10, Math.floor(Math.log10(raw)));
+  const step = [1, 2, 2.5, 5, 10].map(m => m * mag).find(s => s >= raw) || raw;
+  const t = []; for (let v = Math.ceil(lo / step) * step; v <= hi + 1e-9; v += step) t.push(+v.toFixed(10));
+  return t;
+}
+
+function renderCharts() {
+  if (!D.length) return;
+  const root = $("#charts"); root.innerHTML = ""; charts = [];
+  const data = range ? D.slice(-range) : D, n = data.length;
+  // 先建好所有卡片再量寬度，避免第一張卡片在分欄前被量到整行寬度
+  const cards = CH.map(cfg => {
+    const card = document.createElement("div"); card.className = "card";
+    const lg = cfg.series.length > 1 ? `<div class="legend">${cfg.series.map(s => `<span><i style="background:var(${s.c})"></i>${s.label}</span>`).join("")}</div>` : "";
+    card.innerHTML = `<h3>${cfg.title}</h3>${lg}`;
+    root.appendChild(card);
+    return card;
+  });
+  CH.forEach((cfg, ci) => {
+    const card = cards[ci];
+    const W = Math.max(300, card.clientWidth - 24), H = 190, L = 44, R = 50, T = 8, B = 20;
+    const iw = W - L - R, ih = H - T - B;
+    // y 範圍
+    let lo = Infinity, hi = -Infinity;
+    cfg.series.forEach(s => data.forEach(r => { const v = r[s.k] * (s.sign || 1); if (isFinite(v)) { lo = Math.min(lo, v); hi = Math.max(hi, v); } }));
+    const nonneg = lo >= 0 && cfg.series[0].k !== "nikkei225";
+    if (cfg.kind === "bar") { lo = Math.min(lo, 0); hi = Math.max(hi, 0); }
+    if (cfg.fixed) [lo, hi] = cfg.fixed;
+    else { const pad = (hi - lo) * .06 || 1; hi += pad; if (cfg.kind === "line") lo = nonneg ? Math.max(0, lo - pad) : lo - pad; else if (lo < 0) lo -= pad; }
+    const x = i => L + (cfg.kind === "bar" ? (i + .5) * iw / n : i * iw / Math.max(1, n - 1));
+    const y = v => T + ih - (v - lo) / (hi - lo) * ih;
+    let g = "";
+    niceTicks(lo, hi).forEach(v => { g += `<line x1="${L}" x2="${L + iw}" y1="${y(v)}" y2="${y(v)}" stroke="var(--grid)"/><text x="${L - 6}" y="${y(v) + 4}" text-anchor="end">${cfg.yfmt(v)}</text>`; });
+    (cfg.refs || []).forEach(r => { if (r.v > lo && r.v < hi) g += `<line x1="${L}" x2="${L + iw}" y1="${y(r.v)}" y2="${y(r.v)}" stroke="var(--muted)" stroke-dasharray="3 3"/>`; });
+    // x 標籤
+    const nx = Math.min(5, n); for (let j = 0; j < nx; j++) { const i = Math.round(j * (n - 1) / Math.max(1, nx - 1)); g += `<text x="${x(i)}" y="${H - 5}" text-anchor="${j === 0 ? "start" : j === nx - 1 ? "end" : "middle"}">${data[i].Date.slice(2)}</text>`; }
+    // 資料
+    cfg.series.forEach(s => {
+      const col = `var(${s.c})`;
+      if (cfg.kind === "bar") {
+        const bw = Math.max(1, iw / n * .72);
+        data.forEach((r, i) => { const v = r[s.k] * (s.sign || 1); if (!isFinite(v)) return; const y0 = y(0), y1 = y(v);
+          g += `<rect x="${x(i) - bw / 2}" y="${Math.min(y0, y1)}" width="${bw}" height="${Math.max(.5, Math.abs(y1 - y0))}" fill="${col}"/>`; });
+      } else {
+        let d = ""; data.forEach((r, i) => { const v = r[s.k]; if (isFinite(v)) d += (d ? "L" : "M") + x(i).toFixed(1) + " " + y(v).toFixed(1); });
+        g += `<path d="${d}" fill="none" stroke="${col}" stroke-width="2" stroke-linejoin="round"/>`;
+        // 行尾直接標籤（顏色對比不足時的輔助）
+        const lastV = data[n - 1][s.k]; if (isFinite(lastV) && cfg.series.length > 1)
+          g += `<text x="${x(n - 1) + 5}" y="${y(lastV) + 4}" style="fill:var(--text)">${s.short || s.label}</text>`;
+      }
+    });
+    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+    svg.innerHTML = g + `<line class="xh" y1="${T}" y2="${T + ih}" stroke="var(--text2)" stroke-width="1" style="display:none"/><rect class="hit" x="${L}" y="${T}" width="${iw}" height="${ih}" fill="transparent"/>`;
+    card.appendChild(svg);
+    const ch = { cfg, svg, data, n, x, L, iw, bar: cfg.kind === "bar", xh: svg.querySelector(".xh") };
+    const hit = svg.querySelector(".hit");
+    hit.addEventListener("mousemove", e => {
+      const rc = svg.getBoundingClientRect(), px = (e.clientX - rc.left) * (W / rc.width) - L;
+      const i = Math.max(0, Math.min(n - 1, ch.bar ? Math.floor(px / (iw / n)) : Math.round(px / (iw / Math.max(1, n - 1)))));
+      setHover(i, ch, e);
+    });
+    hit.addEventListener("mouseleave", () => setHover(-1));
+    charts.push(ch);
+  });
+}
+
+function setHover(i, active, e) {
+  hover = i;
+  charts.forEach(c => { if (i < 0) c.xh.style.display = "none"; else { const px = c.x(i); c.xh.setAttribute("x1", px); c.xh.setAttribute("x2", px); c.xh.style.display = ""; } });
+  const tip = $("#tip");
+  if (i < 0 || !active) { tip.style.display = "none"; return; }
+  const r = active.data[i];
+  tip.innerHTML = `<b>${r.Date}</b>` + active.cfg.series.map(s => `<div><i style="background:var(${s.c})"></i>${s.label}：${s.k.startsWith("ratio") ? fmt(r[s.k], 2) : s.k === "t2108" ? fmt(r[s.k], 1) + "%" : fmt(r[s.k])}</div>`).join("");
+  tip.style.display = "block";
+  const w = tip.offsetWidth; tip.style.left = Math.min(innerWidth - w - 8, e.clientX + 14) + "px"; tip.style.top = (e.clientY + 14) + "px";
+}
+
+/* ---------- 表格 ---------- */
+const UP = new Set(["up4","q_up25","m_up25","m_up50","d34_up13"]), DN = new Set(["down4","q_dn25","m_dn25","m_dn50","d34_dn13"]);
+function cls(k, v) {
+  if (!isFinite(v)) return "";
+  if (UP.has(k) || DN.has(k)) { const p = pct(k, v), s = UP.has(k) ? "u" : "d"; return p >= .9 ? s + "2" : p >= .75 ? s + "1" : ""; }
+  if (k === "ratio5" || k === "ratio10") { const p = pct(k, v); return p >= .9 ? "u2" : p >= .75 ? "u1" : p <= .1 ? "d2" : p <= .25 ? "d1" : ""; }
+  if (k === "t2108") return v >= 85 ? "u2" : v >= 70 ? "u1" : v <= 20 ? "d2" : v <= 30 ? "d1" : "";
+  if (k.endsWith("_chg_pct")) return v >= 2.5 ? "u2" : v >= 1 ? "u1" : v <= -2.5 ? "d2" : v <= -1 ? "d1" : "";
+  return "";
+}
+function renderTable() {
+  const C = [["up4", "4%↑", 0], ["down4", "4%↓", 0], ["ratio5", "5日比", 2], ["ratio10", "10日比", 2], ["q_up25", "季25%↑", 0], ["q_dn25", "季25%↓", 0],
+    ["m_up25", "月25%↑", 0], ["m_dn25", "月25%↓", 0], ["m_up50", "月50%↑", 0], ["m_dn50", "月50%↓", 0], ["d34_up13", "34日13%↑", 0], ["d34_dn13", "34日13%↓", 0],
+    ["t2108", "T2108", 1], ["universe_size", "股票數", 0], ["nikkei225", "日經225", 0], ["nikkei225_chg_pct", "日經%", 2], ["topix_etf_chg_pct", "TOPIX%", 2]];
+  const grp = `<tr class="grp"><th></th><th colspan="6">主要廣度指標</th><th colspan="6">次要廣度指標</th><th colspan="2"></th><th colspan="3">指數</th></tr>`;
+  const head = `<tr><th>日期</th>${C.map(c => `<th>${c[1]}</th>`).join("")}</tr>`;
+  const rows = (showAll ? D : D.slice(-40)).slice().reverse().map(r =>
+    `<tr><td>${r.Date}</td>${C.map(c => `<td class="${cls(c[0], r[c[0]])}">${fmt(r[c[0]], c[2])}</td>`).join("")}</tr>`).join("");
+  $("#tbl").innerHTML = `<thead>${grp}${head}</thead><tbody>${rows}</tbody>`;
+  $("#more").textContent = showAll ? "只顯示最近 40 日" : "顯示全部歷史";
+}
+$("#more").onclick = () => { showAll = !showAll; renderTable(); };
+
+let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(renderCharts, 150); });
+load();
+</script>
+</body>
+</html>
