@@ -1,0 +1,9 @@
+data/prices/
+data/*.xlsx
+data/*.xls
+*.xlsx
+*.xls
+__pycache__/
+*.pyc
+.venv/
+data/download_log.csv
