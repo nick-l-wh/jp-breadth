@@ -66,6 +66,7 @@ svg text { fill: var(--text2); font-size: 11px; font-variant-numeric: tabular-nu
 table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; white-space: nowrap; }
 th, td { padding: 4px 9px; text-align: right; border-bottom: 1px solid var(--line); }
 thead th { position: sticky; top: 0; background: var(--panel); font-weight: 600; font-size: 12px; color: var(--text2); }
+table.thr td, table.thr th { text-align: left; white-space: normal; }
 thead tr.grp th { text-align: center; border-bottom: 1px solid var(--line); color: var(--text); }
 th:first-child, td:first-child { text-align: left; position: sticky; left: 0; background: var(--panel); }
 td.u1 { background: var(--up-t1); } td.u2 { background: var(--up-t2); }
@@ -91,6 +92,21 @@ details p { margin: 6px 0; }
   <h2>走勢圖</h2>
   <div class="toolbar" id="ranges" role="group" aria-label="時間範圍"></div>
   <div class="charts" id="charts"></div>
+
+  <h2>門檻說明</h2>
+  <div class="tablewrap"><table class="thr">
+    <thead><tr><th>項目</th><th>門檻</th><th>說明</th></tr></thead>
+    <tbody>
+      <tr><td>股票池</td><td>20 日平均成交金額 ≥ 1,000 萬日圓</td><td>東證 Prime／Standard／Growth 內國普通股，排除 ETF、REIT、PRO Market</td></tr>
+      <tr><td>4% 漲／跌</td><td>當日報酬 ≥ +4%／≤ −4%</td><td>只看價格，未加成交量條件</td></tr>
+      <tr><td>5／10 日比率</td><td>近 5／10 日漲 4% 合計 ÷ 跌 4% 合計</td><td>大於 1 代表大漲股多過大跌股</td></tr>
+      <tr><td>季度</td><td>65 個交易日報酬 ±25%</td><td>過去約一季升或跌超過 25% 的家數</td></tr>
+      <tr><td>月度</td><td>21 個交易日報酬 ±25%、±50%</td><td>過去約一個月升或跌超過 25% 及 50% 的家數</td></tr>
+      <tr><td>34 日</td><td>34 個交易日報酬 ±13%</td><td>中期升跌超過 13% 的家數</td></tr>
+      <tr><td>T2108</td><td>收盤 &gt; 40 日均線</td><td>高於 40 日均線的股票佔比（%）</td></tr>
+      <tr><td>表格底色</td><td>歷史前 10%（深色）／前 25%（淺色）</td><td>藍＝偏強端，橘＝偏弱端</td></tr>
+    </tbody>
+  </table></div>
 
   <h2>每日數據表</h2>
   <div class="toolbar">
