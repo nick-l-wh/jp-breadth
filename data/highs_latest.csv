@@ -1,0 +1,40 @@
+ticker,name,market,sector,close,chg_pct,volume,turnover_jpy,day_high,prior_52w_high,dist_pct
+9246.T,"ProjectHoldings,Inc.",Growth,Services,2195.0,26.0,269900,592430500,2197.0,1742.0,26.0
+6523.T,PHC Holdings Corporation,Prime,Electric Appliances,1684.0,17.76,7439800,12528623200,1694.0,1612.0,4.47
+9632.T,"Subaru Enterprise Co.,Ltd.",Standard,Services,4870.0,16.79,130900,637483000,4870.0,4170.0,16.79
+2962.T,"TECNISCO,LTD.",Standard,Metal Products,2495.0,12.13,912600,2276937000,2599.0,2406.0,3.7
+5243.T,note inc.,Growth,Information & Communication,3935.0,10.22,1474300,5801370500,4095.0,3590.0,9.61
+6668.T,"ADTEC PLASMA TECHNOLOGY CO.,LTD.",Standard,Electric Appliances,4815.0,9.31,133700,643765500,4870.0,4540.0,6.06
+4394.T,"eXmotion Co.,Ltd.",Growth,Information & Communication,827.0,7.54,186100,153904700,829.0,769.0,7.54
+4178.T,Sharing Innovations Inc.,Growth,Information & Communication,870.0,5.71,142600,124062000,885.0,860.0,1.16
+5942.T,"NIPPON FILCON CO.,LTD.",Standard,Metal Products,728.0,5.66,1241900,904103200,757.0,715.0,1.82
+3878.T,TOMOEGAWA CORPORATION,Standard,Chemicals,994.0,4.19,100600,99996400,995.0,978.0,1.64
+6912.T,KIKUSUI HOLDINGS CORPORATION,Standard,Electric Appliances,2839.0,4.11,17000,48263000,2850.0,2848.0,-0.32
+325A.T,TENTIAL Inc.,Growth,Textiles and Apparels,2030.0,3.57,417600,847728000,2032.0,2010.0,1.0
+135A.T,"VRAIN Solution,Inc.",Growth,Information & Communication,5220.0,3.57,97500,508950000,5290.0,5090.0,2.55
+6337.T,TESEC Corporation,Standard,Machinery,3795.0,2.99,43700,165841500,3830.0,3760.0,0.93
+7826.T,"FURUYA METAL CO.,LTD.",Prime,Other Products,11820.0,2.6,490300,5795346000,12000.0,11880.0,-0.51
+3374.T,Naigai Tec Corporation,Standard,Wholesale Trade,5040.0,2.54,80600,406224000,5070.0,4920.0,2.44
+7839.T,"SHOEI CO.,LTD.",Prime,Other Products,2161.0,2.32,231700,500703700,2176.0,2175.0,-0.64
+9824.T,"SENSHU ELECTRIC CO.,LTD.",Prime,Wholesale Trade,8170.0,2.25,83100,678927000,8170.0,8150.0,0.25
+6533.T,Orchestra Holdings Inc.,Prime,Services,1917.0,1.91,231000,442827000,1962.0,1945.0,-1.44
+7608.T,"SK JAPAN CO.,LTD.",Standard,Wholesale Trade,975.0,1.46,131000,127725000,1000.0,976.0,-0.1
+8358.T,Suruga Bank Ltd.,Prime,Banks,2974.0,1.16,2636000,7839464000,3030.0,3015.0,-1.36
+4331.T,"TAKE AND GIVE. NEEDS Co.,Ltd.",Prime,Services,876.0,1.04,328900,288116400,879.0,875.0,0.11
+4203.T,"Sumitomo Bakelite Company,Limited",Prime,Chemicals,8496.0,1.01,621600,5281113600,8506.0,8430.0,0.78
+6788.T,"NIHON TRIM CO.,LTD.",Prime,Electric Appliances,5300.0,0.95,14100,74730000,5340.0,5270.0,0.57
+9928.T,"MIROKU JYOHO SERVICE CO.,LTD.",Prime,Information & Communication,2133.0,0.9,40700,86813100,2145.0,2123.0,0.47
+7480.T,SUZUDEN CORPORATION,Standard,Wholesale Trade,3860.0,0.78,81700,315362000,3875.0,3845.0,0.39
+8704.T,"TRADERS HOLDINGS CO.,LTD.",Standard,Securities and Commodities Futures,1438.0,0.56,164700,236838600,1478.0,1458.0,-1.37
+7366.T,LITALICO Inc.,Prime,Services,1946.0,0.41,83800,163074800,1958.0,1947.0,-0.05
+5136.T,"tripla Co.,Ltd.",Growth,Information & Communication,2514.0,0.16,80900,203382600,2560.0,2546.0,-1.26
+3864.T,Mitsubishi Paper Mills Limited,Prime,Pulp and Paper,1250.0,0.08,153900,192375000,1257.0,1251.0,-0.08
+3842.T,"Nextgen,Inc.",Standard,Information & Communication,1371.0,0.07,7600,10419600,1381.0,1370.0,0.07
+8563.T,"THE DAITO BANK,LTD.",Standard,Banks,1240.0,0.0,80500,99820000,1250.0,1248.0,-0.64
+7435.T,"NADEX CO.,LTD.",Standard,Wholesale Trade,1412.0,-0.42,20900,29510800,1446.0,1434.0,-1.53
+3143.T,O'will Corporation,Standard,Wholesale Trade,1036.0,-0.58,88500,91686000,1072.0,1042.0,-0.58
+6194.T,"Atrae,Inc.",Prime,Services,941.0,-0.95,337100,317211100,958.0,952.0,-1.16
+4627.T,"NATOCO CO.,LTD.",Standard,Chemicals,2064.0,-1.24,12200,25180800,2171.0,2096.0,-1.53
+7161.T,"Jimoto Holdings,Inc.",Standard,Banks,681.0,-1.45,202500,137902500,704.0,697.0,-2.3
+4746.T,"Toukei Computer Co.,Ltd.",Standard,Information & Communication,1947.0,-1.96,330000,642510000,2000.0,1994.0,-2.36
+1848.T,FUJI P.S CORPORATION,Standard,Construction,883.0,-3.71,67300,59425900,940.0,919.0,-3.92
