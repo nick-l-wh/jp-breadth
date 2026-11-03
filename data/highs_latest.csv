@@ -24,7 +24,7 @@ ticker,name,market,sector,close,chg_pct,volume,turnover_jpy,day_high,prior_52w_h
 6419.T,Mars Group Holdings Corporation,Prime,Machinery,3295.0,0.3,218000,718310000,3355.0,3350.0,-1.64
 2702.T,"McDonald's Holdings Company(Japan),Ltd.",Standard,Retail Trade,8710.0,0.23,1247400,10864854000,8858.0,8830.0,-1.36
 9110.T,"NS United Kaiun Kaisha,Ltd.",Prime,Marine Transportation,10550.0,0.09,204100,2153255000,10570.0,10560.0,-0.09
-4502.T,Takeda Pharmaceutical Company Limited,Prime,Pharmaceutical,6647.0,-0.06,4972000,33048884000,6798.0,6712.0,-0.97
+4502.T,Takeda Pharmaceutical Company Limited,Prime,Pharmaceutical,6647.0,-0.06,4972000,33048884000,6797.0,6712.0,-0.97
 9536.T,"SAIBU GAS HOLDINGS CO.,LTD.",Prime,Electric Power and Gas,2788.0,-0.21,374600,1044384800,2868.0,2802.0,-0.5
 4911.T,"Shiseido Company,Limited",Prime,Chemicals,3814.0,-0.29,1950600,7439588400,3842.0,3826.0,-0.31
 2004.T,"Showa Sangyo Co.,Ltd.",Prime,Foods,4095.0,-0.61,82900,339475500,4125.0,4120.0,-0.61
